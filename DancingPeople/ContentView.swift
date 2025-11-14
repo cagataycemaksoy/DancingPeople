@@ -45,8 +45,11 @@ struct ContentView: View {
             Spacer()
             
             PhotosPicker(selection: $pickerItem, matching: .images, preferredItemEncoding: .automatic) {
-              Label("Pick Photo", systemImage: "")
+              Label("Pick Photo", systemImage: "photo.on.rectangle.angled")
             }
+            .buttonStyle(.borderedProminent)
+            .tint(.appPurple)
+            .shadow(radius: 5)
               .onChange(of: pickerItem) {
                 Task {
                   guard let selectedImage = try? await pickerItem?.loadTransferable(type: Image.self) else{
