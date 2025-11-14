@@ -7,11 +7,13 @@
 
 import SwiftUI
 import AVFAudio
+import PhotosUI
 
 struct ContentView: View {
   @State private var dancingPerson = Image("dancingPerson1")
   @State private var isFullSize = true
   @State private var audioPlayer: AVAudioPlayer!
+  @State private var pickerItem: PhotosPickerItem?
   
     var body: some View {
         ZStack {
@@ -42,14 +44,18 @@ struct ContentView: View {
             Spacer()
             Spacer()
             
-            Button {
-              //TODO: Pick a photo
-            } label: {
-              Label("Pick Photo", systemImage: "photo.fill.on.rectangle.fill")
+            PhotosPicker(selection: $pickerItem, matching: .images, preferredItemEncoding: .automatic) {
+              Label("Pick Photo", systemImage: "")
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.appPurple)
-            .shadow(radius: 4)
+              .onChange(of: pickerItem) {
+                Task {
+                  guard let selectedImage = try? await pickerItem?.loadTransferable(type: Image.self) else{
+                    print("😡 ERROR 😡")
+                    return
+                  }
+                  dancingPerson = selectedImage
+                }
+              }
            
             Rectangle().frame(height: 0)
 
