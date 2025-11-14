@@ -32,6 +32,9 @@ struct ContentView: View {
               dancingPerson
               .resizable()
               .scaledToFit()
+              .clipShape(RoundedRectangle(cornerRadius: 70))
+              .padding(.horizontal)
+              .shadow(radius: 15)
               .scaleEffect(isFullSize ? 1.0 : 0.8)
               .onTapGesture {
                 playAudio()
